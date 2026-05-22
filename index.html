@@ -265,7 +265,7 @@
             // Calcula a altura exata para não achatar
             const alturaLogo = (logo.naturalHeight * larguraLogo) / logo.naturalWidth;
             // Estampa no PDF
-            doc.addImage(logo, 'PNG', 15, 11, larguraLogo, alturaLogo); 
+            doc.addImage(logo, 'PNG', 15, 10.5, larguraLogo, alturaLogo); 
         } catch(e) {
             console.log("Logo não encontrada ou erro ao carregar.");
         }

@@ -257,22 +257,26 @@
         doc.setFontSize(14);
         doc.text("RELATÓRIO DE VIAGEM", 105, 22, null, null, "center");
 
+        // --- CÁLCULO INTELIGENTE DA LOGO ---
         try {
             const logo = document.getElementById('logo-camara');
-            doc.addImage(logo, 'PNG', 15, 8, 22, 22); 
+            // Definimos a largura base (pode aumentar ou diminuir esse 30 se quiser)
+            const larguraLogo = 30; 
+            // Calcula a altura exata para não achatar
+            const alturaLogo = (logo.naturalHeight * larguraLogo) / logo.naturalWidth;
+            // Estampa no PDF
+            doc.addImage(logo, 'PNG', 15, 8, larguraLogo, alturaLogo); 
         } catch(e) {
-            console.log("Logo não encontrada.");
+            console.log("Logo não encontrada ou erro ao carregar.");
         }
 
         doc.setFontSize(10);
         
-        // --- FUNÇÃO ATUALIZADA: AGORA RECEBE offset1 E offset2 ---
         function desenharLinha(label1, valor1, x1, w1, label2, valor2, x2, w2, offset1, offset2) {
             doc.rect(x1, y, w1, h);
             doc.setFont("helvetica", "bold");
             doc.text(label1, x1 + 2, y + 5.2);
             doc.setFont("helvetica", "normal");
-            // Usa o offset1 para afastar o texto da primeira coluna
             doc.text(valor1, x1 + offset1, y + 5.2);
             
             if(label2) {
@@ -280,13 +284,11 @@
                 doc.setFont("helvetica", "bold");
                 doc.text(label2, x2 + 2, y + 5.2);
                 doc.setFont("helvetica", "normal");
-                // Usa o offset2 para afastar o texto da segunda coluna (Transporte, Matrícula, etc)
                 doc.text(valor2, x2 + offset2, y + 5.2);
             }
             y += h;
         }
 
-        // --- CHAMADAS ATUALIZADAS COM OS NOVOS ESPAÇAMENTOS (OS DOIS ÚLTIMOS NÚMEROS) ---
         desenharLinha("Portaria Nº", portaria + " -CMP,", margem, largura, null, null, null, null, 24, 0);
         desenharLinha("Beneficiado (a):", beneficiado, margem, 130, "Matrícula:", matricula, margem + 130, 50, 34, 22);
         desenharLinha("Cargo/Função:", cargo, margem, largura, null, null, null, null, 30, 0);
